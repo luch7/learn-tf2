@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-y = tf.constant([1.01, 2.01, -0.66])
+y = tf.constant([1.01, 2.01, -0.66])  # y不符合概率分布，相加不等于1
 y_pro = tf.nn.softmax(y)
 
 print("After softmax, y_pro is:", y_pro)  # y_pro 符合概率分布
