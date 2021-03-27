@@ -8,8 +8,8 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 # 导入数据，分别为输入特征和标签
-x_data = datasets.load_iris().data
-y_data = datasets.load_iris().target
+x_data = datasets.load_iris().data  # 只含特征值
+y_data = datasets.load_iris().target  # 导入与x_data相对应的标签值
 
 # 随机打乱数据（因为原始数据是顺序的，顺序不打乱会影响准确率）
 # seed: 随机数种子，是一个整数，当设置之后，每次生成的随机数都一样（为方便教学，以保每位同学结果一致）
@@ -30,14 +30,15 @@ x_train = tf.cast(x_train, tf.float32)
 x_test = tf.cast(x_test, tf.float32)
 
 # from_tensor_slices函数使输入特征和标签值一一对应。（把数据集分批次，每个批次batch组数据）
-train_db = tf.data.Dataset.from_tensor_slices((x_train, y_train)).batch(32)
-test_db = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(32)
+# 设置batch？
+train_db = tf.data.Dataset.from_tensor_slices((x_train, y_train)).batch(32)  # 将x_train和y_train拼接起来
+test_db = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(32)  # 将x_test和y_test拼接起来
 
 # 生成神经网络的参数，4个输入特征故，输入层为4个输入节点；因为3分类，故输出层为3个神经元
 # 用tf.Variable()标记参数可训练
 # 使用seed使每次生成的随机数相同（方便教学，使大家结果都一致，在现实使用时不写seed）
-w1 = tf.Variable(tf.random.truncated_normal([4, 3], stddev=0.1, seed=1))
-b1 = tf.Variable(tf.random.truncated_normal([3], stddev=0.1, seed=1))
+w1 = tf.Variable(tf.random.truncated_normal([4, 3], stddev=0.1, seed=1))  # 参数w1是一个4x3的矩阵
+b1 = tf.Variable(tf.random.truncated_normal([3], stddev=0.1, seed=1))  # 偏移量b1是一个1x3的行向量
 
 lr = 0.1  # 学习率为0.1
 train_loss_results = []  # 将每轮的loss记录在此列表中，为后续画loss曲线提供数据
@@ -46,8 +47,9 @@ epoch = 500  # 循环500轮
 loss_all = 0  # 每轮分4个step，loss_all记录四个step生成的4个loss的和
 
 # 训练部分
-for epoch in range(epoch):  #数据集级别的循环，每个epoch循环一次数据集
-    for step, (x_train, y_train) in enumerate(train_db):  #batch级别的循环 ，每个step循环一个batch
+for epoch in range(epoch):  # 数据集级别的循环，每个epoch循环一次数据集
+    for step, (x_train, y_train) in enumerate(train_db):  # batch级别的循环 ，每个step循环一个batch，一共4个batch
+        # 一个batch为32个数据，120个训练数据分为4个batch
         with tf.GradientTape() as tape:  # with结构记录梯度信息
             y = tf.matmul(x_train, w1) + b1  # 神经网络乘加运算
             y = tf.nn.softmax(y)  # 使输出y符合概率分布（此操作后与独热码同量级，可相减求loss）
@@ -62,7 +64,7 @@ for epoch in range(epoch):  #数据集级别的循环，每个epoch循环一次�
         b1.assign_sub(lr * grads[1])  # 参数b自更新
 
     # 每个epoch，打印loss信息
-    print("Epoch {}, loss: {}".format(epoch, loss_all/4))
+    print("Epoch {}, loss: {}".format(epoch, loss_all / 4))
     train_loss_results.append(loss_all / 4)  # 将4个step的loss求平均记录在此变量中
     loss_all = 0  # loss_all归零，为记录下一个epoch的loss做准备
 
@@ -89,6 +91,17 @@ for epoch in range(epoch):  #数据集级别的循环，每个epoch循环一次�
     test_acc.append(acc)
     print("Test_acc:", acc)
     print("--------------------------")
+
+print('w1: ', w1)
+print('b1: ', b1)
+# w1:  <tf.Variable 'Variable:0' shape=(4, 3) dtype=float32, numpy=
+# array([[ 0.68065697,  0.55174536, -1.0215316 ],
+#        [ 1.3870649 , -0.04592402, -1.2145296 ],
+#        [-1.9874209 , -0.19598596,  1.9906212 ],
+#        [-0.8295611 , -0.7204098 ,  1.635153  ]], dtype=float32)>
+# b1:  <tf.Variable 'Variable:0' shape=(3,) dtype=float32, numpy=array([ 0.20182635,  0.3048688 , -0.7762286 ], dtype=float32)>
+
+# 修改学习速率、训练次数，观察变化
 
 # 绘制 loss 曲线
 plt.title('Loss Function Curve')  # 图片标题
