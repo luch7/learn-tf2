@@ -6,3 +6,6 @@ print("loss_ce1:", loss_ce1)
 print("loss_ce2:", loss_ce2)
 
 # 交叉熵损失函数
+# H(y_, y) = -sum(y_ * ln(y))
+# 可以表示两个概率之间的“距离”
+

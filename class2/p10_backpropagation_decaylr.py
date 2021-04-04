@@ -1,5 +1,7 @@
 import tensorflow as tf
 
+# 指数衰减学习率，用于最初快速得到较优解
+
 w = tf.Variable(tf.constant(5, dtype=tf.float32))
 
 epoch = 40

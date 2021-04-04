@@ -13,11 +13,12 @@ x = tf.cast(x, dtype=tf.float32)
 w1 = tf.Variable(tf.random.normal([2, 1], stddev=1, seed=1))
 
 epoch = 10000
-lr = 0.002
+lr = 0.001
 
 for epoch in range(epoch):
     with tf.GradientTape() as tape:
         y = tf.matmul(x, w1)
+        # 自定义损失函数
         loss = tf.reduce_sum(tf.where(tf.greater(y, y_), (y - y_) * COST, (y_ - y) * PROFIT))
 
     grads = tape.gradient(loss, w1)
@@ -26,6 +27,7 @@ for epoch in range(epoch):
     if epoch % 500 == 0:
         print("After %d training steps,w1 is " % (epoch))
         print(w1.numpy(), "\n")
+        print('loss: ', loss)
 print("Final w1 is: ", w1.numpy())
 
 # 自定义损失函数
