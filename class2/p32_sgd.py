@@ -63,7 +63,7 @@ for epoch in range(epoch):  # 数据集级别的循环，每个epoch循环一次
         b1.assign_sub(lr * grads[1])  # 参数b自更新
 
     # 每个epoch，打印loss信息
-    print("Epoch {}, loss: {}".format(epoch, loss_all / 4))
+    print("Epoch {}, loss: {}".format(epoch, loss_all / 4))  # 一共有4个batch，对loss求平均值，得到每个batch的平均loss
     train_loss_results.append(loss_all / 4)  # 将4个step的loss求平均记录在此变量中
     loss_all = 0  # loss_all归零，为记录下一个epoch的loss做准备
 

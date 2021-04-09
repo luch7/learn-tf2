@@ -68,7 +68,7 @@ for epoch in range(epoch):  # 数据集级别的循环，每个epoch循环一次
         v_b += tf.square(grads[1])
         w1.assign_sub(lr * grads[0] / tf.sqrt(v_w))
         b1.assign_sub(lr * grads[1] / tf.sqrt(v_b))
-    ##########################################################################
+        ##########################################################################
 
     # 每个epoch，打印loss信息
     print("Epoch {}, loss: {}".format(epoch, loss_all / 4))
