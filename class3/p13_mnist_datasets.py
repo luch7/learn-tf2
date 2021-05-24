@@ -1,17 +1,21 @@
 import tensorflow as tf
 from matplotlib import pyplot as plt
 
+# 设置输出矩阵不换行
+import numpy as np
+np.set_printoptions(linewidth=400)
+
 mnist = tf.keras.datasets.mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 # 可视化训练集输入特征的第一个元素
 plt.imshow(x_train[0], cmap='gray')  # 绘制灰度图
-plt.show()
+# plt.show()
 
 # 打印出训练集输入特征的第一个元素
-print("x_train[0]:\n", x_train[0])
+print("x_train[0]:\n", x_train[10])
 # 打印出训练集标签的第一个元素
-print("y_train[0]:\n", y_train[0])
+print("y_train[0]:\n", y_train[10])
 
 # 打印出整个训练集输入特征形状
 print("x_train.shape:\n", x_train.shape)

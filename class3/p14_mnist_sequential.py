@@ -5,9 +5,9 @@ mnist = tf.keras.datasets.mnist
 x_train, x_test = x_train / 255.0, x_test / 255.0
 
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dense(10, activation='softmax')
+    tf.keras.layers.Flatten(),  # 将矩阵拉直为一维数组28*28=784
+    tf.keras.layers.Dense(128, activation='relu'),  # 第一层128个神经元
+    tf.keras.layers.Dense(10, activation='softmax')  # 第二层10个神经元
 ])
 
 model.compile(optimizer='adam',
